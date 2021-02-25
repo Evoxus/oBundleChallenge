@@ -2,6 +2,8 @@
 
 - Sign up for a BigCommerce trial store, this will be valid for 15 days and will be needed to complete the test
 - Install Stencil CLI for local development, you will be using the default Cornerstone Theme that comes standard with new BigCommerce stores
+
+
 *Refer to the BigCommerce developer documentation for any questions you might have. It will contain all the info needed to complete the tasks below*
 
 ## Task
@@ -13,7 +15,7 @@
 - If the cart has an item in it - show a button next to the Add All To Cart button which says Remove All Items. When clicked it should clear the cart and notify the user.
 - Both buttons should utilize the Storefront API for completion.
 
-### *Bonus*
+#### *Bonus*
 
 - If a customer is logged in - at the top of the category page show a banner that shows some customer details (i.e. name, email, phone, etc). This should utilize the data that is rendered via Handlebars on the Customer Object.
 
