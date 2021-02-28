@@ -5,6 +5,7 @@ category:
         limit: {{theme_settings.categorypage_products_per_page}}
 ---
 {{inject "categoryProductsPerPage" theme_settings.categorypage_products_per_page}}
+{{inject "categoryProducts" category.products}}
 {{inject "categoryId" category.id}}
 {{#partial "head"}}
     {{#if pagination.category.previous}}
@@ -30,6 +31,16 @@ category:
     <h1 class="page-heading">{{category.name}}</h1>
     {{{region name="category_below_header"}}}
 {{/unless}}
+
+<div class="add-remove-cart-buttons">
+	<div class="add-to-cart">
+		<a class="add-all-to-cart button button--primary" onclick="">Add All To Cart</a>
+	</div>  
+	<div class="remove-from-cart">
+		<a class="remove-all-from-cart button button--primary" onclick="">Remove All From Cart</a>
+	</div>     
+</div>
+
 {{{category.description}}}
 <div class="page">
     {{#if category.faceted_search_enabled}}

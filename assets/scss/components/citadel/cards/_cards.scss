@@ -171,3 +171,29 @@
         }
     }
 }
+
+.card-figure {
+    a {
+        display: block;
+        position: relative;
+        overflow: hidden;
+    }
+}
+.card-image ~ .card-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 750ms;
+}
+.card:hover,
+.card:focus,
+.card:active {
+    .card-image {
+        opacity: 0;
+        transition-duration: 750ms;
+    }
+    .card-image ~ .card-image {
+        opacity: 1;
+    }
+}

@@ -16,19 +16,14 @@
                 </div>
             {{/if}}
         {{/or}}
-        <a href="{{url}}" 
-           class="card-figure__link"
-           aria-label="{{name}},{{> components/products/product-aria-label}}"
-           {{#if settings.data_tag_enabled}} data-event-type="product-click" {{/if}}
-        >
+        <a href="{{url}}" {{#if settings.data_tag_enabled}} data-event-type="product-click" {{/if}}>
             <div class="card-img-container">
-                {{> components/common/responsive-img
-                    image=image
-                    class="card-image"
-                    fallback_size=theme_settings.productgallery_size
-                    lazyload=theme_settings.lazyload_mode
-                    default_image=theme_settings.default_image_product
-                }}
+                <img class="card-image" src="{{getImage image 'productgallery_size' (cdn theme_settings.default_image_product)}}" alt="{{image.alt}}" title="{{image.alt}}">
+                {{#each (limit images 2)}}
+                {{#if @index '>' 0}}
+                    <img class="card-image" src="{{getImage this 'productgallery_size' (cdn theme_settings.default_image_product)}}" alt="{{this.alt}}" title="{{this.alt}}">
+                {{/if}}
+                {{/each}}
             </div>
         </a>
 
@@ -57,8 +52,7 @@
                             <a href="{{pre_order_add_to_cart_url}}" data-event-type="product-click" class="button button--small card-figcaption-button">{{lang 'products.pre_order'}}</a>
                         {{/if}}
                         {{#if add_to_cart_url }}
-                            <a href="{{add_to_cart_url}}" data-event-type="product-click" data-button-type="add-cart" class="button button--small card-figcaption-button">{{lang 'products.add_to_cart'}}</a>
-                            <span class="product-status-message aria-description--hidden">{{lang 'category.add_cart_announcement'}}</span>
+                            <a href="{{add_to_cart_url}}" data-event-type="product-click" class="button button--small card-figcaption-button">{{lang 'products.add_to_cart'}}</a>
                         {{/if}}
                         {{#if out_of_stock_message }}
                             <a href="{{url}}" data-event-type="product-click" class="button button--small card-figcaption-button" data-product-id="{{id}}">{{out_of_stock_message}}</a>
@@ -80,9 +74,7 @@
             <p class="card-text" data-test-info-type="brandName">{{brand.name}}</p>
         {{/if}}
         <h3 class="card-title">
-            <a aria-label="{{name}},{{> components/products/product-aria-label}}"
-               href="{{url}}" 
-               {{#if settings.data_tag_enabled}} data-event-type="product-click" {{/if}}>{{name}}</a>
+            <a href="{{url}}" {{#if settings.data_tag_enabled}} data-event-type="product-click" {{/if}}>{{name}}</a>
         </h3>
 
         <div class="card-text" data-test-info-type="price">
