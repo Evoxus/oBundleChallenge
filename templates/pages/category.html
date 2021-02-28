@@ -33,12 +33,8 @@ category:
 {{/unless}}
 
 <div class="add-remove-cart-buttons">
-	<div class="add-to-cart">
-		<a class="add-all-to-cart button button--primary" onclick="">Add All To Cart</a>
-	</div>  
-	<div class="remove-from-cart">
-		<a class="remove-all-from-cart button button--primary" onclick="">Remove All From Cart</a>
-	</div>     
+	<button class="add-all-to-cart button button--primary" onclick="postCartAction(112, `/api/storefront/carts/`, 'add')">Add All To Cart</button>
+	<button class="button button--primary" id="remove-all-from-cart" onclick="postCartAction(null, `/api/storefront/carts/`, 'remove')">Remove All From Cart</button>
 </div>
 
 {{{category.description}}}
