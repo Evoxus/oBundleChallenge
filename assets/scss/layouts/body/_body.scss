@@ -55,3 +55,24 @@
         }
     }
 }
+
+.user-ul {
+    text-align: center;
+}
+
+.user-ul,
+.user-li {
+    margin-left: 0;
+    text-decoration: none;
+    list-style: none;
+}
+
+.user-li {
+    display: inline-block;
+    padding: 0 1rem;
+}
+
+.user-info {
+    margin-bottom: 0;
+    text-transform: uppercase;
+}

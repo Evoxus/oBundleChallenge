@@ -1,6 +1,13 @@
 <main class="body" id='main-content' role='main' data-currency-code="{{currency_selector.active_currency_code}}">
     {{#block "hero"}} {{/block}}
     <div class="container">
+        <ul class="user-ul">
+            {{#if customer}}
+            <li class="user-li"><p class="user-info">Welcome back {{customer.name}}</p></li>
+            <li class="user-li"><p class="user-info">Email on file {{customer.email}}</p></li>
+            <li class="user-li"><p class="user-info">Phone number on file {{customer.phone}}</p></li>
+            {{/if}}
+        </ul>
         {{#block "page"}} {{/block}}
     </div>
     {{> components/common/modal/modal}}
