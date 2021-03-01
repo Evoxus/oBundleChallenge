@@ -33,8 +33,8 @@ category:
 {{/unless}}
 
 <div class="add-remove-cart-buttons">
-	<button class="add-all-to-cart button button--primary" onclick="postCartAction(112, `/api/storefront/carts/`, 'add')">Add All To Cart</button>
-	<button class="button button--primary" id="remove-all-from-cart" onclick="postCartAction(null, `/api/storefront/carts/`, 'remove')">Remove All From Cart</button>
+	<button class="button button--primary" id="add-all-to-cart" onclick="postCartAction(jsContext.categoryProducts, '/api/storefront/carts/', 'add')">Add All To Cart</button>
+	<button class="button button--primary" id="remove-all-from-cart" onclick="postCartAction(null, '/api/storefront/carts/', 'remove')">Remove All From Cart</button>
 </div>
 
 {{{category.description}}}
@@ -60,6 +60,119 @@ category:
         {{{region name="category_below_content"}}}
     </main>
 </div>
+
+<script>
+    const jsContext = JSON.parse({{jsContext}});
+
+    function getInitCart() {
+        fetch('/api/storefront/carts/', {
+            credentials: "include"
+        }).then((res) => res.json())
+        .then((cart) => this.showRemoveAllBtn(cart.length));
+    }
+
+    function showRemoveAllBtn(cartLength) {
+        const removeBtn = document.querySelector('#remove-all-from-cart');
+        if (cartLength === 0) {
+            removeBtn.style.display = 'none';
+        } else {
+            removeBtn.style.display = 'inline-block';
+        }
+    }
+
+    function postCartAction(productId, url, action) {
+        fetch(url, {
+			credentials: 'include'
+		}).then(function(response) {
+			return response.json();
+		}).then(function(cartData) {
+            if (action === 'add') {
+                addAllToCart(productId, url, cartData);
+            } else if (action === 'remove') {
+                removeAllFromCart(url, cartData);
+            }
+        })
+    }
+
+    function addAllToCart(productId, url, cartData) {
+        if (cartData.length === 0 && productId.length > 1) {
+            createCart(url, {
+                "lineItems": [{
+					"quantity": 1,
+					"productId": productId[0]
+				}]
+            }).then(function(productId, url, cartData) {
+                for (let i = 0; i < productId.length; i++) {
+                    addItemToCart(url, cartData[0].id, {
+                        "lineItems": [{
+					        "quantity": 1,
+					        "productId": productId[i]
+				        }]
+                    })
+                }
+            })
+            .then(cart => alert('Successfully added all items to cart'))
+            .catch(err => console.log(err));
+        } else if (cartData.length !== 0) {
+            new Promise(function() {
+                for (let i = 0; i < productId.length; i++) {
+                    addItemToCart(url, cartData[0].id, {
+                        "lineItems": [{
+				            "quantity": 1,
+				            "productId": productId[i]
+				        }]
+                    })
+                }
+            })
+            .then(cart => alert('Successfully added all items to cart'))
+            .catch(err => console.log(err));
+        }
+    }
+    
+
+    function removeAllFromCart(url, cartData) {
+        for(let i = 0;i < cartData[0].lineItems.physicalItems.length;i ++)  {
+			deleteItemFromCart(url, cartData[0].id, cartData[0].lineItems.physicalItems[i].id)
+            .then(data => {})
+			.catch(error => console.log(error));
+        }
+    }
+
+    function createCart(url, cartItems) {
+        return fetch(url, {
+            method: "POST",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json"},
+            body: JSON.stringify(cartItems),
+        })
+        .then(response => response.json())
+        .catch(err => (console.log(err)));
+    }
+
+    function addItemToCart(url, cartId, cartItems) {
+        return fetch(url + cartId + '/items', {
+			method: "POST",
+			credentials: "same-origin",
+			headers: {
+				"Content-Type": "application/json"},
+			body: JSON.stringify(cartItems),
+		})
+		.then(response => response.json())
+        .catch(err => console.log(err));
+    }
+
+    function deleteItemFromCart(url, cartId, itemId) {
+        return fetch(url + cartId + '/items/' + itemId, {
+			method: "DELETE",
+			credentials: "same-origin",
+			headers: {
+				"Content-Type": "application/json",}
+		})
+		.then(response => getInitCart())
+        .catch(err => console.log(err));
+    }
+</script>
 
 {{/partial}}
 {{> layout/base}}

@@ -105,7 +105,7 @@ export default class Category extends CatalogPage {
     }
 
     getInitCart() {
-        fetch("/api/storefront/carts/", {
+        fetch('/api/storefront/carts/', {
             credentials: "include"
         }).then((res) => res.json())
         .then((cart) => this.showRemoveAllBtn(cart.length));
