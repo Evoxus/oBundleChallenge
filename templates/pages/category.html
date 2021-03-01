@@ -32,10 +32,10 @@ category:
     {{{region name="category_below_header"}}}
 {{/unless}}
 
-<div class="add-remove-cart-buttons">
-	<button class="button button--primary" id="add-all-to-cart" onclick="postCartAction(jsContext.categoryProducts, '/api/storefront/carts/', 'add')">Add All To Cart</button>
-	<button class="button button--primary" id="remove-all-from-cart" onclick="postCartAction(null, '/api/storefront/carts/', 'remove')">Remove All From Cart</button>
-</div>
+
+<button class="button button--primary" id="add-all-to-cart" onclick="postCartAction(`/api/storefront/carts/`, 'add')">Add All To Cart</button>
+<button class="button button--primary" id="remove-all-from-cart" onclick="postCartAction(`/api/storefront/carts/`, 'remove')">Remove All From Cart</button>
+
 
 {{{category.description}}}
 <div class="page">
@@ -66,10 +66,12 @@ category:
 
     function getInitCart() {
         fetch('/api/storefront/carts/', {
-            credentials: "include"
+            credentials: 'include'
         }).then((res) => res.json())
         .then((cart) => this.showRemoveAllBtn(cart.length));
     }
+
+    getInitCart();
 
     function showRemoveAllBtn(cartLength) {
         const removeBtn = document.querySelector('#remove-all-from-cart');
@@ -80,53 +82,41 @@ category:
         }
     }
 
-    function postCartAction(productId, url, action) {
+    function postCartAction(url, action) {
         fetch(url, {
 			credentials: 'include'
 		}).then(function(response) {
 			return response.json();
 		}).then(function(cartData) {
-            if (action === 'add') {
-                addAllToCart(productId, url, cartData);
-            } else if (action === 'remove') {
-                removeAllFromCart(url, cartData);
-            }
-        })
+			console.log('JSON', cartData);
+			if(action === 'add') {
+				addAllToCart(jsContext.categoryProducts[0].id, url, cartData);
+			} else if(action === 'remove') {
+				removeAllFromCart(url, cartData);
+			};
+		});
     }
 
     function addAllToCart(productId, url, cartData) {
-        if (cartData.length === 0 && productId.length > 1) {
-            createCart(url, {
-                "lineItems": [{
+        if(cartData.length == 0) {
+			createCart(url, {
+				"lineItems": [{
 					"quantity": 1,
-					"productId": productId[0]
+					"productId": productId
 				}]
-            }).then(function(productId, url, cartData) {
-                for (let i = 0; i < productId.length; i++) {
-                    addItemToCart(url, cartData[0].id, {
-                        "lineItems": [{
-					        "quantity": 1,
-					        "productId": productId[i]
-				        }]
-                    })
-                }
-            })
-            .then(cart => alert('Successfully added all items to cart'))
-            .catch(err => console.log(err));
-        } else if (cartData.length !== 0) {
-            new Promise(function() {
-                for (let i = 0; i < productId.length; i++) {
-                    addItemToCart(url, cartData[0].id, {
-                        "lineItems": [{
-				            "quantity": 1,
-				            "productId": productId[i]
-				        }]
-                    })
-                }
-            })
-            .then(cart => alert('Successfully added all items to cart'))
-            .catch(err => console.log(err));
-        }
+			})
+			.then(data => {})
+			.catch(error => console.error(error));
+		} else {
+			addItemToCart(url, cartData[0].id, {
+				"lineItems": [{
+					"quantity": 1,
+					"productId": productId
+				}]
+			})
+			.then(cartData => {})
+			.catch(error => console.error(error));
+		}
     }
     
 
