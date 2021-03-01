@@ -1,3 +1,16 @@
+# Preview code and URL
+hjxdjoqao4
+
+
+https://teststore363.mybigcommerce.com/?ctk=132f7eb8-4d27-494f-af31-4d35469a0016
+
+## Thoughts/Progress
+After spending as much time on this as I can this is where I am at with it all. 
+
+The add and remove all from cart buttons are partially implemented. The functionality is mostly there but for some reason the cart fetch is not working correctly to get the cartId to make further requests work. Because of this road block I wasn't able to alert the user of success or failure correctly. I know that there has to be a better way to do this and I had initially seen some success implementing all this inside the category.js file. The issue there arose with my on click handler and `this` pointing to the button instead of any of the functions inside the category class.
+
+I was able to show the signed in user info and complete the 2nd image on hover feature easily enough.
+
 ## Setup
 
 - Sign up for a BigCommerce trial store, this will be valid for 15 days and will be needed to complete the test

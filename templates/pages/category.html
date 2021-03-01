@@ -70,7 +70,7 @@ category:
         }).then((res) => res.json())
         .then((cart) => this.showRemoveAllBtn(cart.length));
     }
-
+    // Run to set display of removeAllBtn correctly
     getInitCart();
 
     function showRemoveAllBtn(cartLength) {
@@ -87,7 +87,7 @@ category:
 			credentials: 'include'
 		}).then(function(response) {
 			return response.json();
-		}).then(function(cartData) {
+		}).then(function(cartData) {    // This isn't returning the cart data for some reason but also shows as a successful request
 			console.log('JSON', cartData);
 			if(action === 'add') {
 				addAllToCart(jsContext.categoryProducts[0].id, url, cartData);
